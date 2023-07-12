@@ -7,6 +7,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockZebraPlatform
     with MockPlatformInterfaceMixin
     implements ZebraPlatform {
+
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
 }
@@ -19,7 +20,7 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    Zebra zebraPlugin = const Zebra();
+    Zebra zebraPlugin = Zebra();
     MockZebraPlatform fakePlatform = MockZebraPlatform();
     ZebraPlatform.instance = fakePlatform;
 

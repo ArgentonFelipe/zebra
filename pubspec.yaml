@@ -36,7 +36,8 @@ flutter:
     platforms:
       android:
         package: br.com.srssistemas.zebra
-        pluginClass: ZebraPlugin
+        pluginClass: ZebraAndroidPlugin
+        
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

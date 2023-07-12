@@ -1,17 +1,26 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'zebra_platform_interface.dart';
 
-/// An implementation of [ZebraPlatform] that uses method channels.
 class MethodChannelZebra extends ZebraPlatform {
-  /// The method channel used to interact with the native platform.
-  @visibleForTesting
-  final methodChannel = const MethodChannel('zebra');
+  static const _methodChannelName = 'br.com.srssistemas/zebra';
+  static const _channel = MethodChannel(_methodChannelName);
+
+  static const _scanChannelName = "br.com.srssistemas/scan";
+  static const _scanChannel = EventChannel(_scanChannelName);
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
+  Future<void> createProfile({required String profileName}) async {
+    await _channel.invokeMethod('createProfile', profileName);
+  }
+
+  @override
+  Stream scanBarcode() {
+    return _scanChannel.receiveBroadcastStream();
+  }
+
+  @override
+  Future<void> startBarcodeScanning() async {
+    await _channel.invokeMethod('startBarcodeScanning');
   }
 }

@@ -23,7 +23,9 @@ abstract class ZebraPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
-  }
+  Future<void> createProfile({required String profileName});
+
+  Stream scanBarcode();
+
+  Future<void> startBarcodeScanning();
 }
