@@ -6,7 +6,7 @@ class MethodChannelZebra extends ZebraPlatform {
   static const _methodChannelName = 'br.com.srssistemas/zebra';
   static const _channel = MethodChannel(_methodChannelName);
 
-  static const _scanChannelName = "br.com.srssistemas/scan";
+  static const _scanChannelName = 'br.com.srssistemas/scan';
   static const _scanChannel = EventChannel(_scanChannelName);
 
   @override
