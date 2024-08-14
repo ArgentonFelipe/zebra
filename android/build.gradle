@@ -2,7 +2,7 @@ group = "br.com.srssistemas.zebra"
 version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = "1.9.20"
+    ext.kotlin_version = "1.7.10"
     repositories {
         google()
         mavenCentral()
@@ -26,7 +26,7 @@ apply plugin: "kotlin-android"
 
 android {
     if (project.android.hasProperty("namespace")) {
-        namespace = "br.com.srssistemas.zebra_v2"
+        namespace = "br.com.srssistemas.zebra"
     }
 
     compileSdk = 34
@@ -37,7 +37,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     sourceSets {

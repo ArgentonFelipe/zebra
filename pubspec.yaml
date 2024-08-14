@@ -1,11 +1,11 @@
 name: zebra
 description: A new Flutter plugin project.
-version: 1.0.1
+version: 1.0.2
 homepage:
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
-  flutter: ">=3.22.2"
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: ">=3.24.0"
 
 dependencies:
   flutter:
