@@ -13,7 +13,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-class ZebraAndroidPlugin: FlutterPlugin, MethodCallHandler {
+class ZebraPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var scanChannel: EventChannel
   private lateinit var context: Context
