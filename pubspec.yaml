@@ -1,10 +1,10 @@
 name: zebra
 description: Pacote para facilitar a integração entre o Flutter e o TC21 do fornecedor Zebra
-version: 1.0.6
+version: 1.0.7
 homepage:
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: '>=3.6.1 <4.0.0'
   flutter: ">=3.24.0"
 
 dependencies:

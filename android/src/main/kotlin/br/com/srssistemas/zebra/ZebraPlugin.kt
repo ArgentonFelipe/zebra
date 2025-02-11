@@ -37,7 +37,7 @@ class ZebraPlugin: FlutterPlugin, MethodCallHandler {
         scanIntent.addAction(Helpers.SCAN_ACTION)
         scanIntent.addAction(Helpers.RETURN_ACTION_COMMAND)
         scanIntent.addCategory(Helpers.INTENT_CATEGORY_DEFAULT)
-        context.registerReceiver(scanBroadcast, scanIntent)
+        context.registerReceiver(scanBroadcast, scanIntent, Context.RECEIVER_EXPORTED)
       }
 
       override fun onCancel(arguments: Any?) {
