@@ -1,6 +1,5 @@
 package br.com.srssistemas.zebra
 
-
 import android.content.*
 import android.os.Bundle
 import androidx.annotation.NonNull
@@ -17,6 +16,7 @@ class ZebraPlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var scanChannel: EventChannel
   private lateinit var context: Context
+  private var scanBroadcast : BroadcastReceiver? = null // Make it a member variable
   private val START_SCAN_CHANNEL = "be.com.srssistemas/start_scan"
   private val SCAN_CHANNEL = "br.com.srssistemas/scan"
   private val CHANNEL = "br.com.srssistemas/zebra"
@@ -30,7 +30,7 @@ class ZebraPlugin: FlutterPlugin, MethodCallHandler {
     scanChannel = EventChannel(flutterPluginBinding.binaryMessenger, SCAN_CHANNEL)
 
     scanChannel.setStreamHandler(object: StreamHandler {
-      private var scanBroadcast : BroadcastReceiver? = null
+
       override fun onListen(arguments: Any?, events: EventSink?) {
         scanBroadcast = createBroadcastReceiver(events)
         val scanIntent = IntentFilter()
@@ -41,8 +41,7 @@ class ZebraPlugin: FlutterPlugin, MethodCallHandler {
       }
 
       override fun onCancel(arguments: Any?) {
-        context.unregisterReceiver(scanBroadcast)
-        scanBroadcast = null
+          disposeBroadcastReceiver()
       }
     })
   }
@@ -63,6 +62,7 @@ class ZebraPlugin: FlutterPlugin, MethodCallHandler {
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
     scanChannel.setStreamHandler(null)
+    disposeBroadcastReceiver() // Ensure it's disposed on detach too
   }
 
   private fun createBroadcastReceiver(events: EventSink?) : BroadcastReceiver {
@@ -158,7 +158,18 @@ class ZebraPlugin: FlutterPlugin, MethodCallHandler {
     return intentProprieties
   }
 
+  private fun disposeBroadcastReceiver() {
+      if (scanBroadcast != null) {
+          try {
+              context.unregisterReceiver(scanBroadcast)
+          } catch (e: IllegalArgumentException) {
+              // Receiver was probably already unregistered
+              e.printStackTrace()
+          } finally {
+              scanBroadcast = null
+          }
+      }
+  }
+
 
 }
-
-
