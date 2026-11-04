@@ -1,0 +1,54 @@
+import 'zebra_symbology.dart';
+
+/// Uma leitura entregue pelo DataWedge para o app em primeiro plano.
+class ZebraScan {
+  const ZebraScan({
+    required this.data,
+    required this.rawData,
+    required this.symbology,
+    required this.receivedAt,
+    this.labelType,
+    this.source,
+  });
+
+  /// Conteúdo lido, sem espaços/quebras de linha nas pontas. Nunca vazio.
+  final String data;
+
+  /// Conteúdo exatamente como enviado pelo DataWedge.
+  final String rawData;
+
+  final ZebraSymbology symbology;
+
+  /// Valor bruto de `label_type` (ex.: `LABEL-TYPE-EAN13`).
+  final String? labelType;
+
+  /// Origem da leitura (`scanner`, `msr`, `serial`...).
+  final String? source;
+
+  final DateTime receivedAt;
+
+  /// Retorna nulo quando o mapa não contém uma leitura válida (ausente ou vazia).
+  static ZebraScan? tryParse(Object? event) {
+    if (event is! Map) return null;
+    final raw = event['data'];
+    if (raw is! String) return null;
+    final data = raw.trim();
+    if (data.isEmpty) return null;
+
+    final labelType = event['labelType'] as String?;
+    final timestamp = event['timestamp'];
+    return ZebraScan(
+      data: data,
+      rawData: raw,
+      symbology: ZebraSymbology.fromLabelType(labelType),
+      labelType: labelType,
+      source: event['source'] as String?,
+      receivedAt: timestamp is int
+          ? DateTime.fromMillisecondsSinceEpoch(timestamp)
+          : DateTime.now(),
+    );
+  }
+
+  @override
+  String toString() => 'ZebraScan($data, ${symbology.name})';
+}

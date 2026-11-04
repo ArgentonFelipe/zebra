@@ -1,15 +1,15 @@
 group = "br.com.srssistemas.zebra"
-version = "1.0-SNAPSHOT"
+version = "2.0.0"
 
 buildscript {
-    ext.kotlin_version = "1.7.10"
+    ext.kotlin_version = "2.4.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.0")
+        classpath("com.android.tools.build:gradle:9.1.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
@@ -21,23 +21,19 @@ allprojects {
     }
 }
 
+// Built-in Kotlin (padrão do Flutter 3.47+): o plugin NÃO aplica o KGP.
+// Em apps com AGP 8.x ou android.builtInKotlin=false, o Flutter Gradle Plugin
+// aplica o kotlin-android automaticamente nos plugins.
 apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
 
 android {
-    if (project.android.hasProperty("namespace")) {
-        namespace = "br.com.srssistemas.zebra"
-    }
+    namespace = "br.com.srssistemas.zebra"
 
-    compileSdk = 34
+    compileSdk = 36
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -46,23 +42,34 @@ android {
     }
 
     defaultConfig {
-        minSdk = 21
-    }
-
-    dependencies {
-        testImplementation("org.jetbrains.kotlin:kotlin-test")
-        testImplementation("org.mockito:mockito-core:5.0.0")
+        minSdk = 24
     }
 
     testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-
-            testLogging {
-               events "passed", "skipped", "failed", "standardOut", "standardError"
-               outputs.upToDateWhen {false}
-               showStandardStreams = true
+        unitTests {
+            includeAndroidResources = true
+            all {
+                testLogging {
+                    events "passed", "skipped", "failed"
+                    outputs.upToDateWhen { false }
+                }
             }
         }
     }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
+dependencies {
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.lifecycle:lifecycle-common:2.8.7")
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("androidx.test:core:1.6.1")
+    testImplementation("org.mockito:mockito-core:5.14.2")
 }

@@ -1,3 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="br.com.srssistemas.zebra">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Necessário (Android 11+) para detectar se o DataWedge está instalado. -->
+  <queries>
+    <package android:name="com.symbol.datawedge" />
+  </queries>
 </manifest>
