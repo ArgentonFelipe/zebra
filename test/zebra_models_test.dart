@@ -55,8 +55,9 @@ void main() {
     });
 
     test('preserva o separador GS (FNC1) dentro de códigos GS1', () {
-      final scan =
-          ZebraScan.tryParse({'data': '0107891234567895\u001D10LOTE1'})!;
+      final scan = ZebraScan.tryParse({
+        'data': '0107891234567895\u001D10LOTE1',
+      })!;
       expect(scan.data, '0107891234567895\u001D10LOTE1');
     });
 
@@ -65,6 +66,30 @@ void main() {
       expect(ZebraScan.tryParse('Nothing'), isNull);
       expect(ZebraScan.tryParse({'data': null}), isNull);
       expect(ZebraScan.tryParse({'data': '   \n'}), isNull);
+    });
+  });
+
+  group('ZebraScan.fromFields', () {
+    test('monta a leitura dos campos nativos com trim e horário', () {
+      final scan = ZebraScan.fromFields(
+        rawData: ' 7891234567895\n',
+        labelType: 'LABEL-TYPE-EAN13',
+        source: 'scanner',
+        timestampMs: 1700000000000,
+      )!;
+
+      expect(scan.data, '7891234567895');
+      expect(scan.rawData, ' 7891234567895\n');
+      expect(scan.symbology, ZebraSymbology.ean13);
+      expect(scan.source, 'scanner');
+      expect(
+        scan.receivedAt,
+        DateTime.fromMillisecondsSinceEpoch(1700000000000),
+      );
+    });
+
+    test('retorna nulo para leitura vazia', () {
+      expect(ZebraScan.fromFields(rawData: '  \n'), isNull);
     });
   });
 
@@ -79,10 +104,15 @@ void main() {
     });
 
     test('enabledSymbologies habilita as listadas e desabilita as demais', () {
-      final decoders = const ZebraProfileConfig(
-        profileName: 'P',
-        enabledSymbologies: {ZebraSymbology.ean13, ZebraSymbology.code128},
-      ).toMap()['decoders']! as Map<String, bool>;
+      final decoders =
+          const ZebraProfileConfig(
+                profileName: 'P',
+                enabledSymbologies: {
+                  ZebraSymbology.ean13,
+                  ZebraSymbology.code128,
+                },
+              ).toMap()['decoders']!
+              as Map<String, bool>;
 
       expect(decoders['decoder_ean13'], isTrue);
       expect(decoders['decoder_code128'], isTrue);

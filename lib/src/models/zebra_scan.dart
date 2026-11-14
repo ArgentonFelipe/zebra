@@ -32,19 +32,33 @@ class ZebraScan {
     if (event is! Map) return null;
     final raw = event['data'];
     if (raw is! String) return null;
-    final data = raw.trim();
-    if (data.isEmpty) return null;
-
-    final labelType = event['labelType'] as String?;
     final timestamp = event['timestamp'];
+    return fromFields(
+      rawData: raw,
+      labelType: event['labelType'] as String?,
+      source: event['source'] as String?,
+      timestampMs: timestamp is int ? timestamp : null,
+    );
+  }
+
+  /// Monta a leitura a partir dos campos entregues pelo nativo. Retorna nulo
+  /// quando [rawData] é vazio depois do trim. Sem [timestampMs], usa o agora.
+  static ZebraScan? fromFields({
+    required String rawData,
+    String? labelType,
+    String? source,
+    int? timestampMs,
+  }) {
+    final data = rawData.trim();
+    if (data.isEmpty) return null;
     return ZebraScan(
       data: data,
-      rawData: raw,
+      rawData: rawData,
       symbology: ZebraSymbology.fromLabelType(labelType),
       labelType: labelType,
-      source: event['source'] as String?,
-      receivedAt: timestamp is int
-          ? DateTime.fromMillisecondsSinceEpoch(timestamp)
+      source: source,
+      receivedAt: timestampMs != null
+          ? DateTime.fromMillisecondsSinceEpoch(timestampMs)
           : DateTime.now(),
     );
   }

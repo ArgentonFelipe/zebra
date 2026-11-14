@@ -2,6 +2,8 @@ analyzer:
   exclude:
     - build/**
     - android/**
+    # Bindings gerados pelo JNIgen (tool/jnigen.dart): não edite à mão.
+    - lib/src/jni/**
 include: package:flutter_lints/flutter.yaml
 
 linter:

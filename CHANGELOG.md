@@ -1,3 +1,21 @@
+## 2.2.0
+
+### Build
+- A ponte com o Android passa a usar **JNIgen** (interop nativa, estável desde o
+  Flutter 3.50) no lugar de `MethodChannel`/`EventChannel`. O Dart chama o Kotlin
+  (`ZebraBridge`) direto por JNI, com tipos gerados, sem roteamento por string e
+  sem `Map` sem tipo. A API pública (`Zebra`, `ZebraPlatform`, modelos e
+  `ZebraException`) não muda.
+- Os resultados voltam por callbacks em modo listener: o Kotlin nunca espera o
+  Dart, então a main thread do Android não bloqueia.
+- Novas dependências: `jni` (runtime) e `jnigen` (dev). Os bindings ficam em
+  `lib/src/jni/zebra_bindings.dart` e são gerados por `tool/jnigen.dart`.
+- Removido `lib/zebra_method_channel.dart` (`MethodChannelZebra`); a
+  implementação padrão agora é `JniZebra` (`lib/zebra_jni.dart`).
+
+### Novidades
+- `ZebraScan.fromFields(...)`: monta a leitura a partir dos campos nativos.
+
 ## 2.1.0
 
 ### Build
