@@ -1,11 +1,11 @@
 name: zebra
 description: Integração entre Flutter e o Zebra DataWedge (TC21 e demais coletores Zebra), com isolamento de leituras por app.
-version: 2.0.0
+version: 2.1.0
 publish_to: none
 
 environment:
-  sdk: ^3.12.0
-  flutter: '>=3.44.0'
+  sdk: ^3.14.0
+  flutter: '>=3.50.0'
 
 dependencies:
   flutter:

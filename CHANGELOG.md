@@ -1,3 +1,11 @@
+## 2.1.0
+
+### Build
+- Exige Flutter `>=3.50.0` e Dart `>=3.14.0`. Nenhuma API muda.
+- O app `example/` usa o Material do package `material_ui`.
+- O app `example/` sobe para AGP 9.3.1, KGP 2.4.20 e Gradle 9.5.0: o Flutter 3.50
+  recusa o build com AGP abaixo de 9.1.1 ou KGP abaixo de 2.4.10.
+
 ## 2.0.0
 
 **Breaking:** a API foi redesenhada. Veja "Migração 1.x → 2.0" no README.
